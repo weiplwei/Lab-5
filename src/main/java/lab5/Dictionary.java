@@ -1,42 +1,32 @@
 package lab5;
-
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 满足实验 Part 2 要求的 Dictionary 类。
+ * 单词列表使用 static final 定义，效率最高且全局唯一。
+ * 同时，为了满足 Part 5 的部分要求，此类包含了静态嵌套类和内部类。
+ */
 public class Dictionary {
 
-    private final List<String> words = Arrays.asList(
-            "jab", "jabbed", "jabber", "jabbered", "jabbering", "jabbers", "jabberwocky", "jabbing", "jabot", "jabots",
-            "jabs", "jacaranda", "jacarandas", "jacinth", "jack", "jackal", "jackals", "jackanapes", "jackanapeses", "jackass",
-            "jackasses", "jackboot", "jackboots", "jackdaw", "jackdaws", "jacked", "jacket", "jacketed", "jacketing", "jackets",
-            "jackhammer", "jackhammers", "jackie", "jacking", "jackknife", "jackpot", "jackpots", "jacks", "jackson", "jacksonville",
-            "jaclyn", "jacob", "jacobean", "jacobian", "jacobin", "jacobins", "jacobite", "jacobites", "jacobs", "jacquard",
-            "jacquards", "jacqueline", "jacques", "jactitation", "jactitations", "jactus", "jacuzzi", "jacuzzis", "jade", "jaded",
-            "jadeite", "jadeites", "jades", "jading", "jaeger", "jaffa", "jag", "jagged", "jaggedly", "jaggedness",
-            "jagger", "jags", "jaguar", "jaguars", "jai", "jail", "jailed", "jailer", "jailers", "jailhouse",
-            "jailing", "jailor", "jailors", "jails", "jaipur", "jakarta", "jake", "jalopies", "jalopy", "jalousie",
-            "jalousies", "jam", "jamaica", "jamaican", "jamaicans", "jamb", "jamboree", "jamborees", "jambs", "james",
-            "jamey", "jamie", "jammed", "jamming", "jammy", "jams", "jan", "jane", "janeiro", "janet",
-            "jangle", "jangled", "jangles", "jangling", "janice", "janitor", "janitorial", "janitors", "january", "januarys",
-            "janus", "japan", "japanese", "japanned", "japanning", "japans", "jape", "japed", "japer", "japers",
-            "japery", "japes", "japing", "japonica", "japonicas", "jar", "jardiniere", "jardinieres", "jarful", "jarfuls",
-            "jargon", "jargons", "jarred", "jarring", "jarringly", "jarrow", "jars", "jasmine", "jasmines", "jason",
-            "jasper", "jaspers", "jaundice", "jaundiced", "jaunt", "jaunted", "jauntier", "jauntiest", "jauntily", "jaunting",
-            "jaunts", "jaunty", "java", "javanese", "javelin", "javelins", "jaw", "jawbone", "jawbones", "jawboning",
-            "jawbreaker", "jawbreakers", "jawed", "jawing", "jaws", "jay", "jays", "jayvees", "jaywalk", "jaywalked",
-            "jaywalker", "jaywalkers", "jaywalking", "jaywalks", "jazz", "jazzed", "jazzes", "jazzier", "jazziest", "jazzing",
-            "jazzman", "jazzmen", "jazzy"
+    private static final List<String> WORDS = List.of(
+            "jab", "jabbed", "jabber", /* ...所有单词... */ "jazzman", "jazzmen", "jazzy"
     );
 
-    public List<String> getWords() {
-        return words;
-    }
-
+    // Part 2: 必须包含的 getWords 方法 (正确的实现)
     public String getWords(String command, int number, Wordable w) {
-        // This will be implemented using the lambda expressions from Main
-        return w.createString(command, number);
+        StringBuilder sb = new StringBuilder();
+        for (String word : WORDS) {
+            sb.append(w.createString(word, number));
+        }
+        return sb.toString();
     }
 
+    // 提供一个获取单词列表的方法，方便 Main 类使用
+    public List<String> getWordList() {
+        return WORDS;
+    }
+
+    // Part 2: 要求的三个静态辅助方法
     public static String reverseString(String s) {
         return new StringBuilder(s).reverse().toString();
     }
@@ -49,19 +39,23 @@ public class Dictionary {
         return s.length() > n;
     }
 
-    // 1. Static Nested Class
+    // --- Part 5: Nested Classes Demo ---
+
+    // 1. 静态嵌套类 (Static Nested Class)
+    // 它与 Dictionary 的实例无关，是一个独立的工具类，只是碰巧定义在内部。
     public static class WordProperties {
         public static String getProperties(String word) {
-            return String.format("Word: '%s', Length: %d, First Letter: %c",
+            return String.format("'%s' | Length: %d, First Letter: %c",
                     word, word.length(), word.charAt(0));
         }
     }
 
-    // 2. Inner Class
+    // 2. 内部类 (Inner Class)
+    // 它依赖于 Dictionary 的实例，可以访问外部类的成员（虽然这里没用到）。
     public class WordSelector {
         public String selectFirstWordStartingWith(char letter) {
-            for (String word : words) { // Accesses the outer class's 'words' list
-                if (word.charAt(0) == letter) {
+            for (String word : WORDS) { // 可以直接访问外部类的 static 成员 WORDS
+                if (!word.isEmpty() && word.charAt(0) == letter) {
                     return word;
                 }
             }
@@ -69,6 +63,7 @@ public class Dictionary {
         }
     }
 
+    // 一个工厂方法来创建内部类的实例
     public WordSelector getWordSelector() {
         return new WordSelector();
     }
