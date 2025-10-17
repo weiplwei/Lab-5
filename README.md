@@ -1,11 +1,11 @@
 Lab 5
 Nested Classes, Lambda Expressions, and Method References
+
 🔍 What You’ll Learn
 •	How to write and use the four types of nested classes in Java: static, inner, local, anonymous
 •	How to write and apply lambda expressions using functional interfaces
 •	How to use method references to simplify your code
-📅 Due
-•	Submit this lab before Lesson 6 to the Learning Hub > Activities > Lab 5
+
 🧠 Part 1 — Functional Interface: Wordable
 Create this interface:
 
